@@ -41,9 +41,9 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
-            compass: {
+            sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'postcss']
+                tasks: ['sass:server', 'postcss']
             },
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -152,30 +152,34 @@ module.exports = function (grunt) {
 
 
         // Compiles Sass to CSS and generates necessary files if requested
-        compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '.tmp/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
-                relativeAssets: false,
-                assetCacheBuster: false
-            },
+        sass: {
             dist: {
                 options: {
-                    generatedImagesDir: '<%= yeoman.dist %>/images/generated'
-                }
+                    implementation: require('sass'),
+                    sourceMap: false,
+                    loadPaths: ['app/bower_components']
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['*.{scss,sass}'],
+                    dest: '.tmp/styles',
+                    ext: '.css'
+                }]
             },
             server: {
                 options: {
-                    debugInfo: true
-                }
+                    implementation: require('sass'),
+                    sourceMap: true,
+                    loadPaths: ['app/bower_components']
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['*.{scss,sass}'],
+                    dest: '.tmp/styles',
+                    ext: '.css'
+                }]
             }
         },
 
@@ -368,7 +372,7 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up build process
         concurrent: {
             server: [
-                'compass:server',
+                'sass:server',
                 'coffee:dist',
                 'copy:styles'
             ],
@@ -378,7 +382,7 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'coffee',
-                'compass',
+                'sass:dist',
                 'copy:styles',
                 'imagemin',
                 'svgmin'
