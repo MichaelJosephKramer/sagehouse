@@ -43,11 +43,11 @@ module.exports = function (grunt) {
             },
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['compass:server', 'postcss']
             },
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-                tasks: ['newer:copy:styles', 'autoprefixer']
+                tasks: ['newer:copy:styles', 'postcss']
             },
             livereload: {
                 options: {
@@ -191,9 +191,11 @@ module.exports = function (grunt) {
         },
 
         // Add vendor prefixed styles
-        autoprefixer: {
+        postcss: {
             options: {
-                browsers: ['last 1 version']
+                processors: [
+                    require('autoprefixer')({browsers: 'last 1 version'})
+                ]
             },
             dist: {
                 files: [{
@@ -418,7 +420,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'concurrent:server',
-            'autoprefixer',
+            'postcss',
             'connect:livereload',
             'watch'
         ]);
@@ -434,7 +436,7 @@ module.exports = function (grunt) {
             grunt.task.run([
                 'clean:server',
                 'concurrent:test',
-                'autoprefixer',
+                'postcss',
             ]);
         }
 
@@ -448,7 +450,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'useminPrepare',
         'concurrent:dist',
-        'autoprefixer',
+        'postcss',
         'concat',
         'cssmin',
         'uglify',
