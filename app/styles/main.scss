@@ -41,21 +41,46 @@ body {
 }
 
 #information {
-  margin-top: 60px;
-  font-size: 30px;
+  margin-top: 30px;
+  font-size: 20px;
   font-family: 'Ceviche One', cursive;
+  text-align: center;
+  line-height: 1.6;
 
-  a { color: #8a4; }
+  a {
+    color: #8a4;
+    padding: 8px 4px;
+    display: inline-block;
+  }
   #email { color: #f72 }
-  #contact { float: left; }
-  #web { float: right; }
+  #contact, #web {
+    float: none;
+    margin-bottom: 20px;
+  }
 }
 
-#logo { margin-top: 30px; }
+#logo { margin-top: 20px; }
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
     max-width: 730px;
   }
+
+  #information {
+    margin-top: 60px;
+    font-size: 30px;
+    text-align: left;
+
+    #contact {
+      float: left;
+      margin-bottom: 0;
+    }
+    #web {
+      float: right;
+      margin-bottom: 0;
+    }
+  }
+
+  #logo { margin-top: 30px; }
 }
